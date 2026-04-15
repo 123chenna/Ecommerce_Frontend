@@ -111,7 +111,7 @@ function register(){
   let phone = document.getElementById("phone").value;
   let password = document.getElementById("password").value;
 
-  fetch("http://localhost:8080/auth/register",{
+  fetch("https://ecommerce-backend-5rta.onrender.com/auth/register",{
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify({username, phone, password})
