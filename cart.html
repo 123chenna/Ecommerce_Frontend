@@ -101,7 +101,7 @@ if (!username) {
 
 // ✅ LOAD CART
 async function loadCart() {
-    const res = await fetch(`http://localhost:8080/cart/${username}`);
+    const res = await fetch(`https://ecommerce-backend-5rta.onrender.com/cart/${username}`);
     const data = await res.json();
 
     const container = document.getElementById("cartItems");
@@ -163,7 +163,7 @@ function updateTotal() {
 
 // ✅ INCREASE
 async function increase(id) {
-    await fetch(`http://localhost:8080/cart/increase/${id}`, { method: "PUT" });
+    await fetch(`https://ecommerce-backend-5rta.onrender.com/increase/${id}`, { method: "PUT" });
 
     const qtyEl = document.getElementById("qty-" + id);
     const totalEl = document.getElementById("itemTotal-" + id);
@@ -181,7 +181,7 @@ async function increase(id) {
 
 // ✅ DECREASE
 async function decrease(id) {
-    await fetch(`http://localhost:8080/cart/decrease/${id}`, { method: "PUT" });
+    await fetch(`https://ecommerce-backend-5rta.onrender.com/cart/increase/${id}`, { method: "PUT" });
 
     const qtyEl = document.getElementById("qty-" + id);
     const totalEl = document.getElementById("itemTotal-" + id);
@@ -204,7 +204,7 @@ async function decrease(id) {
 
 // ✅ REMOVE
 async function removeItem(id) {
-    await fetch(`http://localhost:8080/cart/${id}`, { method: "DELETE" });
+    await fetch(`https://ecommerce-backend-5rta.onrender.com/cart/${id}`, { method: "DELETE" });
     loadCart();
 }
 
