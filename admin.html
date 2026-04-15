@@ -129,8 +129,8 @@ body {
 </div>
 
 <script>
-const API="http://localhost:8080/products";
-const ORDER_API="http://localhost:8080/orders";
+const API="https://ecommerce-backend-5rta.onrender.com/products";
+const ORDER_API="https://ecommerce-backend-5rta.onrender.com/orders";
 
 /* LOGOUT */
 function logout(){
@@ -218,7 +218,7 @@ async function deleteProduct(id){
 }
 //edit product
 async function editProduct(id) {
-    let res = await fetch(`http://localhost:8080/products/${id}`);
+    let res = await fetch(`https://ecommerce-backend-5rta.onrender.com/products/${id}`);
     let p = await res.json();
 
     document.getElementById("name").value = p.name;
@@ -246,7 +246,7 @@ async function updateProduct() {
     const description = document.getElementById("description").value;
 
     // ✅ API call
-    await fetch(`http://localhost:8080/products/${window.editId}`, {
+    await fetch(`https://ecommerce-backend-5rta.onrender.com/products/${window.editId}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
