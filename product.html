@@ -103,7 +103,7 @@ const username = "chenna";
 async function loadProduct() {
     const id = new URLSearchParams(window.location.search).get("id");
 
-    const res = await fetch(`http://localhost:8080/products/${id}`);
+    const res = await fetch(`https://ecommerce-backend-5rta.onrender.com/products/${id}`);
     product = await res.json();
 
     document.getElementById("name").innerText = product.name;
@@ -119,7 +119,7 @@ async function addToCart() {
     const id = new URLSearchParams(window.location.search).get("id");
 
     await fetch(
-        `http://localhost:8080/cart/add?productId=${id}&username=${username}&qty=1`,
+        `https://ecommerce-backend-5rta.onrender.com/cart/add?productId=${id}&username=${username}&qty=1`,
         { method: "POST" }
     );
 
