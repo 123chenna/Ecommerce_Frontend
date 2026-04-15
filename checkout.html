@@ -116,7 +116,7 @@ async function placeOrder() {
         return;
     }
 
-    const res = await fetch(`http://localhost:8080/cart/${username}`);
+    const res = await fetch(`https://ecommerce-backend-5rta.onrender.com/cart/${username}`);
     const cartItems = await res.json();
 
     const total = cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
