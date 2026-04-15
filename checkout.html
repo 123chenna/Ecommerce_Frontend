@@ -90,7 +90,7 @@ const username = "chenna";
 // ✅ LOAD TOTAL FROM CART
 async function loadTotal() {
     try {
-        const res = await fetch(`http://localhost:8080/cart/${username}`);
+        const res = await fetch(`https://ecommerce-backend-5rta.onrender.com/cart/${username}`);
         const data = await res.json();
 
         let total = 0;
@@ -131,7 +131,7 @@ async function placeOrder() {
     };
 
     // ✅ SAVE TO BACKEND
-    await fetch("http://localhost:8080/orders", {
+    await fetch("https://ecommerce-backend-5rta.onrender.com/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(order)
@@ -140,7 +140,7 @@ async function placeOrder() {
     alert("✅ Order placed successfully!");
 
     // CLEAR CART
-    await fetch(`http://localhost:8080/cart/clear/${username}`, {
+    await fetch(`https://ecommerce-backend-5rta.onrender.com/cart/clear/${username}`, {
         method: "DELETE"
     });
 
