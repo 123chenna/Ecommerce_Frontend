@@ -57,7 +57,7 @@ function login(){
     return;
   }
 
-  fetch("http://localhost:8080/auth/login",{
+  fetch("https://ecommerce-backend-5rta.onrender.com/auth/login",{
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify({username, password})
