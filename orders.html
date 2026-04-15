@@ -48,7 +48,7 @@ const container = document.getElementById("orders");
 // ✅ LOAD ORDERS FROM BACKEND
 async function loadOrders() {
     try {
-        const res = await fetch(`http://localhost:8080/orders/${username}`);
+        const res = await fetch(`https://ecommerce-backend-5rta.onrender.com/orders/${username}`);
         const orders = await res.json();
 
         container.innerHTML = "";
