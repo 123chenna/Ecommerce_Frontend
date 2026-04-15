@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Orders</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f5f5f5;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+
+        .order {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .status {
+            color: orange;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>📦 My Orders</h2>
+    <div id="orders"></div>
+</div>
+
+<script>
+
+const username = "chenna";
+const container = document.getElementById("orders");
+
+// ✅ LOAD ORDERS FROM BACKEND
+async function loadOrders() {
+    try {
+        const res = await fetch(`http://localhost:8080/orders/${username}`);
+        const orders = await res.json();
+
+        container.innerHTML = "";
+
+        if (orders.length === 0) {
+            container.innerHTML = "<p>No orders found</p>";
+            return;
+        }
+
+        orders.forEach(o => {
+            container.innerHTML += `
+                <div class="order">
+                    <p><b>Name:</b> ${o.name || "N/A"}</p>
+                    <p><b>Address:</b> ${o.address}</p>
+                    <p><b>Payment:</b> ${o.payment}</p>
+                    <p><b>Total:</b> ₹${o.total}</p>
+                    <p><b>Status:</b> <span class="status">${o.status}</span></p>
+                    <p><b>Ordered At:</b> ${formatTime(o.orderTime)}</p>
+                </div>
+            `;
+        });
+
+    } catch (err) {
+        console.error(err);
+        container.innerHTML = "<p style='color:red'>❌ Failed to load orders</p>";
+    }
+}
+
+// FORMAT TIME
+function formatTime(time) {
+    if (!time) return "N/A";
+
+    const date = new Date(time);
+    return date.toLocaleString("en-IN", {
+        dateStyle: "medium",
+        timeStyle: "short"
+    });
+}
+
+loadOrders();
+
+</script>
+
+</body>
+</html>

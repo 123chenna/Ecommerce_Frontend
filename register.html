@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register - MyShop</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #131921, #232f3e);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .card {
+      width: 380px;
+      padding: 20px;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card shadow bg-white">
+
+  <h3 class="text-center">Create Account</h3>
+
+  <input id="username" class="form-control mt-3" placeholder="Username">
+  <input id="phone" class="form-control mt-2" placeholder="Phone Number">
+  <input id="password" type="password" class="form-control mt-2" placeholder="Password">
+
+  <button class="btn btn-primary mt-3 w-100" onclick="sendOtp()">Send OTP</button>
+
+  <input id="otp" class="form-control mt-2" placeholder="Enter OTP">
+
+  <button class="btn btn-warning mt-2 w-100" onclick="verifyOtp()">Verify OTP</button>
+
+  <p id="status" class="text-center mt-2"></p>
+
+  <button id="registerBtn" class="btn btn-success mt-3 w-100" onclick="register()" disabled>
+    Register
+  </button>
+<p class="text-center mt-3">
+    Already have account? <a href="login.html">Login</a>
+  </p>
+</div>
+
+<script>
+
+let otpVerified = false;
+
+// ✅ SEND OTP
+function sendOtp(){
+  let phone = document.getElementById("phone").value;
+
+  if(!phone){
+    showStatus("Enter phone number ❌", "red");
+    return;
+  }
+
+  fetch("http://localhost:8080/auth/send-otp",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({phone})
+  })
+  .then(res=>res.text())
+  .then(msg=>{
+    showStatus(msg, "green"); // 👈 shows OTP
+  });
+}
+
+
+// ✅ VERIFY OTP
+function verifyOtp(){
+  let phone = document.getElementById("phone").value;
+  let otp = document.getElementById("otp").value;
+
+  fetch("http://localhost:8080/auth/verify-otp",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({phone, otp})
+  })
+  .then(res=>res.text())
+  .then(msg=>{
+
+    if(msg.toLowerCase() === "otp valid"){
+  
+      otpVerified = true;
+      document.getElementById("registerBtn").disabled = false;
+      showStatus("OTP Verified ✅", "green");
+    } else {
+      showStatus("Invalid OTP ❌", "red");
+    }
+
+  });
+}
+
+
+// ✅ REGISTER
+function register(){
+
+  if(!otpVerified){
+    showStatus("Verify OTP first ❌", "red");
+    return;
+  }
+
+  let username = document.getElementById("username").value;
+  let phone = document.getElementById("phone").value;
+  let password = document.getElementById("password").value;
+
+  fetch("http://localhost:8080/auth/register",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({username, phone, password})
+  })
+  .then(res=>res.text())
+  .then(msg=>{
+
+    if(msg.toLowerCase().includes("success")){
+      showStatus("Registered Successfully ✅", "green");
+
+      setTimeout(()=>{
+        window.location.href="login.html";
+      },1000);
+    }
+    else{
+      showStatus(msg, "red");
+    }
+
+  });
+}
+
+
+// ✅ STATUS
+function showStatus(msg, color){
+  let s = document.getElementById("status");
+  s.innerText = msg;
+  s.style.color = color;
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MyShop - Amazon UI</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #eaeded;
+}
+
+/* NAVBAR */
+.navbar {
+    position: sticky;
+    top: 0;
+    background: #131921;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 40px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.location {
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* SEARCH */
+.search {
+    width: 500px;
+    display: flex;
+    background: white;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.search select {
+    border: none;
+    padding: 8px;
+    background: #f3f3f3;
+}
+
+.search input {
+    flex: 1;
+    border: none;
+    padding: 8px;
+}
+
+.search button {
+    background: orange;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+/* ACCOUNT */
+.account {
+    position: relative;
+    cursor: pointer;
+}
+
+.account-menu {
+    display: none;
+    position: absolute;
+    background: white;
+    color: black;
+    top: 30px;
+    right: 0;
+    width: 180px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.account-menu div {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.account-menu div:hover {
+    background: #eee;
+}
+
+.account:hover .account-menu {
+    display: block;
+}
+
+/* CART */
+.cart {
+    position: relative;
+    cursor: pointer;
+}
+
+.cart span {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background: red;
+    color: white;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 50%;
+}
+
+/* ADMIN */
+.admin-btn {
+    cursor: pointer;
+    font-weight: bold;
+    color: #ff9900;
+}
+
+/* MENU */
+.menu {
+    background: #232f3e;
+    color: white;
+    padding: 8px;
+    display: flex;
+    gap: 20px;
+}
+
+/* LAYOUT */
+.container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start; /* ✅ prevents stretching */
+}
+
+.sidebar {
+    width: 220px;
+    min-width: 220px;  /* ✅ lock width */
+    max-width: 220px;
+    flex-shrink: 0;    /* ✅ prevents resize */
+}
+
+.sidebar p {
+    cursor: pointer;
+}
+
+/* PRODUCTS */
+.products {
+    flex: 1; /* 🔥 VERY IMPORTANT */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    align-items: start;
+}
+
+.card {
+    width: 220px;
+    height: 340px;
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;   /* 🔥 center everything horizontally */
+    justify-content: space-between;
+
+    text-align: center;    /* 🔥 center text */
+    transition: 0.3s;
+}
+
+/* Image fixed */
+.card img {
+    width: 100%;
+    height: 150px;
+    object-fit: contain;
+}
+
+/* Prevent text pushing */
+.card h4 {
+    font-size: 16px;
+    margin: 5px 0;
+    text-align: center;
+}
+
+.rating {
+    text-align: center;
+}
+
+.price {
+    text-align: center;
+}
+/* PRICE */
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+/* BUTTON */
+button {
+    background: #ffd814;
+    border: none;
+    padding: 6px;
+    font-size: 13px;
+    width: 100%;
+    cursor: pointer;
+    
+    
+}
+
+button:hover {
+    background: #f7ca00;
+}
+
+#admin-btn {
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+    color: #eaeded;
+}
+
+.admin-btn:hover {
+    text-decoration: underline;
+}
+.rating {
+    text-align: center;
+    color: #ffa41c; /* Amazon star color */
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+
+.rating span:hover {
+    transform: scale(1.2);
+}
+.rating span {
+    cursor: pointer;
+    font-size: 16px;
+    color: #ccc; /* default empty */
+    transition: 0.2s;
+}
+
+.rating span.active {
+    color: #ffa41c; /* selected stars */
+}
+img{
+    cursor: pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+
+    <div class="nav-left">
+        <div class="logo">🛒 MyShop</div>
+
+        <div class="location" onclick="changeLocation()">
+            Deliver to<br><b id="city">India</b>
+        </div>
+    </div>
+
+    <div class="nav-center">
+        <div class="search">
+            
+
+            <input type="text" id="search" placeholder="Search MyShop..." onkeyup="filterProducts()">
+            <button onclick="filterProducts()">🔍</button>
+        </div>
+    </div>
+
+    <div class="nav-right">
+
+        <div class="account">
+            <span id="userSection">Hello, Sign in</span>
+
+            <div class="account-menu">
+                <div onclick="goToLogin()">Login</div>
+                <div onclick="logout()">Logout</div>
+                <div onclick="goToOrders()">My Orders</div>
+            </div>
+        </div>
+
+        <div>
+            <a id="admin-btn" href="admin_login.html">👨‍🔧Admin</a>
+        </div>
+
+        <div class="cart" onclick="goToCart()">
+            🛒
+            <span id="cartCount">0</span>
+        </div>
+
+    </div>
+
+    <div id="adminBtn" class="admin-btn" onclick="goToAdmin()" style="display:none;">
+        🛠 Admin
+    </div>
+
+</div>
+
+<!-- MENU -->
+<div class="menu">
+    <span onclick="filterCategory('')">All</span>
+    <span onclick="filterCategory('Mobiles')">Mobiles</span>
+    <span onclick="filterCategory('Electronics')">Electronics</span>
+    <span onclick="filterCategory('Books')">Books</span>
+    <span onclick="filterCategory('Tshirts')">Tshirts</span>
+    <span onclick="filterCategory('Shirts')">Shirts</span>
+    <span onclick="filterCategory('Makeups')">Makeups</span>
+    <span onclick="filterCategory('Sarees')">Sarees</span>
+    <span onclick="filterCategory('Toys')">Toys</span>
+     <span onclick="filterCategory('Watches')">Watches</span>
+</div>
+
+<div class="container">
+
+<div class="sidebar">
+    <h4>Filters</h4>
+
+    <p onclick="filterCategory('Mobiles')">Mobiles</p>
+    <p onclick="filterCategory('Electronics')">Electronics</p>
+    <p onclick="filterCategory('Books')">Books</p>
+    <p onclick="filterCategory('Tshirts')">Tshirts</p>
+    <p onclick="filterCategory('Shirts')">Shirts</p>
+    <p onclick="filterCategory('Makeups')">Makeups</p>
+    <p onclick="filterCategory('Sarees')">Sarees</p>
+    <p onclick="filterCategory('Toys')">Toys</p>
+     <p onclick="filterCategory('Watches')">Watches</p>
+
+    <h4>Price</h4>
+    <input type="range" min="0" max="500000" value="500000" id="price" oninput="filterProducts()">
+    <p>₹<span id="priceValue">500000</span></p>
+</div>
+
+<div class="products" id="products"></div>
+
+</div>
+
+<script>
+
+let allProducts = [];
+let selectedCategory = "";
+let selectedRating = 0; // ✅ FIXED ERROR
+
+const username = localStorage.getItem("username");
+
+if (username) {
+    document.getElementById("userSection").innerText = "Hello, " + username;
+}
+
+function viewProduct(id){
+    window.location.href="product.html?id="+id;
+}
+
+if (username === "admin") {
+    document.getElementById("adminBtn").style.display = "block";
+}
+
+function changeLocation() {
+    let city = prompt("Enter your city:");
+    if (city) document.getElementById("city").innerText = city;
+}
+
+async function loadProducts() {
+    const res = await fetch("http://localhost:8080/products");
+    allProducts = await res.json();
+
+    console.log("DATA:", allProducts); // 🔥 DEBUG
+
+    filterProducts();
+}
+
+function displayProducts(products) {
+    const container = document.getElementById("products");
+    container.innerHTML = "";
+
+    products.forEach(p => {
+        container.innerHTML += `
+            <div class="card">
+                <img src="${p.image}" onclick="viewProduct(${p.id})">
+                <h4>${p.name}</h4>
+
+                <div class="rating">
+                    ${getClickableStars(p.id, p.rating || 4)}
+                </div>
+
+                <p class="price">₹${p.price}</p>
+                <button onclick="addToCart(${p.id})">Add to Cart</button>
+            </div>
+        `;
+    });
+}
+
+function getClickableStars(productId, rating) {
+    let stars = "";
+
+    for (let i = 1; i <= 5; i++) {
+        stars += `<span 
+                    class="${i <= rating ? 'active' : ''}" 
+                    onclick="rateProduct(${productId}, ${i}, this)">
+                    ★
+                  </span>`;
+    }
+
+    return stars;
+}
+
+function rateProduct(productId, rating, el) {
+    const parent = el.parentElement;
+    const stars = parent.querySelectorAll("span");
+
+    stars.forEach((star, index) => {
+        if (index < rating) {
+            star.classList.add("active");
+        } else {
+            star.classList.remove("active");
+        }
+    });
+}
+
+// ✅ FINAL FILTER FUNCTION (FIXED)
+function filterProducts() {
+    let search = document.getElementById("search").value.toLowerCase();
+    let maxPrice = document.getElementById("price").value;
+
+    document.getElementById("priceValue").innerText = maxPrice;
+
+    let filtered = allProducts.filter(p => {
+
+        let name = (p.name || "").toLowerCase();
+        let category = (p.category || "").toLowerCase().trim();
+        let selected = (selectedCategory || "").toLowerCase().trim();
+
+        let matchSearch = name.includes(search);
+
+        // ✅ SAFE CATEGORY FILTER
+        let matchCategory = selected === "" || category.includes(selected);
+
+        let matchPrice = p.price <= maxPrice;
+
+        let matchRating = (p.rating || 0) >= selectedRating;
+
+        return matchSearch && matchCategory && matchPrice && matchRating;
+    });
+
+    displayProducts(filtered);
+}
+
+function filterCategory(cat) {
+    selectedCategory = cat;
+    filterProducts();
+}
+
+function setRating(r) {
+    selectedRating = r;
+    filterProducts();
+}
+
+async function addToCart(id) {
+    await fetch("http://localhost:8080/cart/add", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({
+            productId: id,
+            username: username || "guest",
+            quantity: 1
+        })
+    });
+
+    updateCartCount();
+}
+
+async function updateCartCount() {
+    const res = await fetch(`http://localhost:8080/cart/count/${username || "guest"}`);
+    const count = await res.json();
+    document.getElementById("cartCount").innerText = count;
+}
+
+function goToCart(){ window.location.href="cart.html"; }
+function goToOrders(){ window.location.href="orders.html"; }
+function goToLogin(){ window.location.href="login.html"; }
+function goToAdmin(){ window.location.href="admin.html"; }
+
+function logout() {
+    localStorage.clear();
+    location.reload();
+}
+
+// INIT
+loadProducts();
+updateCartCount();
+
+</script>
+
+</body>
+</html>

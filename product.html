@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #141313;
+        }
+
+        .container {
+            width: 60%;
+            margin: 50px auto;
+            display: flex;
+            gap: 40px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        /* 🔍 IMAGE ZOOM */
+        .image-box {
+            width: 60%;
+            overflow: hidden;
+        }
+
+        .image-box img {
+            width: 80%;
+            transition: transform 0.3s;
+        }
+
+        .image-box img:hover {
+            transform: scale(1.4);
+        }
+
+        .details {
+            width: 50%;
+        }
+
+        .price {
+            color: green;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        button {
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .cart-btn {
+            background: orange;
+        }
+
+        /* 🛒 FLOAT CART */
+        .cart-icon {
+            position: fixed;
+            top: 20px;
+            right:20px;
+           
+            color:red;
+            padding:20px;
+            border-radius:15px;
+            box-shadow: 5px  10px 15px rgb(130, 128, 128);
+           font-size: larger;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- 🛒 CART ICON -->
+//<div class="cart-icon" onclick="goToCart()">🛒 Cart</div>
+<button class="cart-icon" onclick="goToCart()">🛒 Cart</button>
+<div class="container">
+
+    <!-- IMAGE -->
+    <div class="image-box">
+        <img id="image">
+    </div>
+
+    <!-- DETAILS -->
+    <div class="details">
+        <h2 id="name"></h2>
+        <p id="desc"></p>
+        <div class="price">₹<span id="price"></span></div>
+
+        
+    </div>
+
+</div>
+
+<script>
+let product = {};
+const username = "chenna";
+
+// 🔹 Load product
+async function loadProduct() {
+    const id = new URLSearchParams(window.location.search).get("id");
+
+    const res = await fetch(`http://localhost:8080/products/${id}`);
+    product = await res.json();
+
+    document.getElementById("name").innerText = product.name;
+    document.getElementById("desc").innerText = product.description || "";
+    document.getElementById("price").innerText = product.price;
+
+    document.getElementById("image").src =
+        product.image || "https://via.placeholder.com/400";
+}
+
+// 🔹 Add to cart
+async function addToCart() {
+    const id = new URLSearchParams(window.location.search).get("id");
+
+    await fetch(
+        `http://localhost:8080/cart/add?productId=${id}&username=${username}&qty=1`,
+        { method: "POST" }
+    );
+
+    alert("✅ Added to Cart");
+}
+
+// 🔹 Go to cart
+function goToCart() {
+    window.location.href = "cart.html";
+}
+
+loadProduct();
+</script>
+
+</body>
+</html>
