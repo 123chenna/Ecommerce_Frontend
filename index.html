@@ -383,7 +383,7 @@ function changeLocation() {
 }
 
 async function loadProducts() {
-    const res = await fetch("http://localhost:8080/products");
+    const res = await fetch("https://ecommerce-backend-5rta.onrender.com/products");
     allProducts = await res.json();
 
     console.log("DATA:", allProducts); // 🔥 DEBUG
@@ -478,7 +478,7 @@ function setRating(r) {
 }
 
 async function addToCart(id) {
-    await fetch("http://localhost:8080/cart/add", {
+    await fetch("https://ecommerce-backend-5rta.onrender.com/cart/add", {
         method: "POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify({
@@ -492,7 +492,7 @@ async function addToCart(id) {
 }
 
 async function updateCartCount() {
-    const res = await fetch(`http://localhost:8080/cart/count/${username || "guest"}`);
+    const res = await fetch(`https://ecommerce-backend-5rta.onrender.com/cart/count/${username || "guest"}`);
     const count = await res.json();
     document.getElementById("cartCount").innerText = count;
 }
