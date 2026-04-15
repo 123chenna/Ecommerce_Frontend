@@ -61,7 +61,7 @@ function sendOtp(){
     return;
   }
 
-  fetch("http://localhost:8080/auth/send-otp",{
+  fetch("https://ecommerce-backend-5rta.onrender.com/auth/send-otp",{
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify({phone})
@@ -78,7 +78,7 @@ function verifyOtp(){
   let phone = document.getElementById("phone").value;
   let otp = document.getElementById("otp").value;
 
-  fetch("http://localhost:8080/auth/verify-otp",{
+  fetch("https://ecommerce-backend-5rta.onrender.com/auth/verify-otp",{
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify({phone, otp})
