@@ -40,20 +40,27 @@
     <div id="orders"></div>
 </div>
 
-<script>
+    <script>
 
-const username = "chenna";
+const username = localStorage.getItem("username"); // ✅ FIXED
 const container = document.getElementById("orders");
 
 // ✅ LOAD ORDERS FROM BACKEND
 async function loadOrders() {
+
+    // 🔒 Check login
+    if (!username) {
+        container.innerHTML = "<p>Please login first</p>";
+        return;
+    }
+
     try {
         const res = await fetch(`https://ecommerce-backend-5rta.onrender.com/orders/${username}`);
         const orders = await res.json();
 
         container.innerHTML = "";
 
-        if (orders.length === 0) {
+        if (!orders || orders.length === 0) {
             container.innerHTML = "<p>No orders found</p>";
             return;
         }
