@@ -85,11 +85,11 @@ async function loadOrders() {
 }
 
 // FORMAT TIME
-function formatTime(time) {
-    if (!time) return "N/A";
 
+        function formatTime(time) {
     const date = new Date(time);
     return date.toLocaleString("en-IN", {
+        timeZone: "Asia/Kolkata",
         dateStyle: "medium",
         timeStyle: "short"
     });
