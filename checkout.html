@@ -85,7 +85,15 @@
 </div>
 
 <script>
-const username = "chenna";
+
+// ✅ GET LOGGED-IN USER
+const username = localStorage.getItem("username");
+
+// ❗ Check login
+if (!username) {
+    alert("Please login first");
+    window.location.href = "login.html";
+}
 
 // ✅ LOAD TOTAL FROM CART
 async function loadTotal() {
@@ -106,6 +114,7 @@ async function loadTotal() {
 
 // ✅ PLACE ORDER
 async function placeOrder() {
+
     const name = document.getElementById("name").value;
     const address = document.getElementById("address").value;
     const phone = document.getElementById("phone").value;
@@ -116,21 +125,23 @@ async function placeOrder() {
         return;
     }
 
+    // GET CART ITEMS
     const res = await fetch(`https://ecommerce-backend-5rta.onrender.com/cart/${username}`);
     const cartItems = await res.json();
 
     const total = cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
+    // ✅ CORRECT ORDER OBJECT
     const order = {
-        username,
-        name,
-        address,
-        phone,
-        payment,
-        total
+        username: username, // 🔥 FIXED
+        name: name,
+        address: address,
+        phone: phone,
+        payment: payment,
+        total: total
     };
 
-    // ✅ SAVE TO BACKEND
+    // SAVE ORDER
     await fetch("https://ecommerce-backend-5rta.onrender.com/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -148,7 +159,9 @@ async function placeOrder() {
 }
 
 loadTotal();
+
 </script>
+
 
 </body>
 </html>
